@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  COLPORTOR
+  ADMIN
+  LIDER
+  PASTOR_EQUIPE
+  PASTOR_UNIAO
+}
+
+enum PaymentMethod {
+  DINHEIRO
+  CARTAO_VISTA
+  CARTAO_PARCELADO
+  PIX
+  OUTRO
+}
+
+enum SaleStatus {
+  ATIVA
+  CANCELADA
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  password      String?
+  role          Role      @default(COLPORTOR)
+  teamId        String?
+  segment       String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  team      Team?       @relation(fields: [teamId], references: [id])
+  campaigns Campaign[]
+  sales     Sale[]
+  purchases Purchase[]
+  reports   DailyReport[]
+  materials Material[]
+
+  @@index([email])
+  @@index([teamId])
+  @@index([role])
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+}
+
+model Campaign {
+  id              String   @id @default(uuid())
+  userId          String
+  startDate       DateTime
+  endDate         DateTime
+  workDays        Int      @default(0)
+  metaVenda       Float    @default(0)
+  metaCompra      Float    @default(0)
+  metaOfertas     Float    @default(0)
+  metaHoras       Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Material {
+  id                  String   @id @default(uuid())
+  name                String
+  priceColportor      Float
+  priceColportorTithe Float
+  pricePublic         Float
+  buyPrice            Float
+  createdBy           String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  creator User @relation(fields: [createdBy], references: [id])
+
+  sales     Sale[]
+  purchases Purchase[]
+
+  @@index([createdBy])
+  @@index([name])
+}
+
+model Sale {
+  id             String       @id @default(uuid())
+  userId         String
+  materialId     String?
+  clientName     String
+  clientContact  String?
+  quantity       Int          @default(1)
+  paymentMethod  PaymentMethod @default(DINHEIRO)
+  parcelCount    Int          @default(1)
+  cardFeePercent Float        @default(0)
+  totalValue     Float
+  cost           Float        @default(0)
+  profit         Float        @default(0)
+  tithe          Float        @default(0)
+  netProfit      Float        @default(0)
+  status         SaleStatus   @default(ATIVA)
+  date           DateTime     @default(now())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material? @relation(fields: [materialId], references: [id])
+
+  @@index([userId])
+  @@index([materialId])
+  @@index([date])
+  @@index([status])
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  userId    String
+  materialId String
+  quantity  Int
+  unitCost  Float
+  total     Float
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id])
+
+  @@index([userId])
+  @@index([materialId])
+  @@index([date])
+}
+
+model DailyReport {
+  id                String   @id @default(uuid())
+  userId            String
+  date              DateTime @default(now())
+  ofertas           Float    @default(0)
+  horasTrabalhadas  Float    @default(0)
+  valorVendaAvista  Float    @default(0)
+  valorAReceber     Float    @default(0)
+  valorCompra       Float    @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
