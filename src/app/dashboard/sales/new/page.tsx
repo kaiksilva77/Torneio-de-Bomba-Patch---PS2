@@ -60,148 +60,146 @@ export default function NewSalePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
+      <nav className="bg-white shadow sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-14">
             <div className="flex items-center">
               <button
                 onClick={() => router.back()}
-                className="mr-4 text-gray-600 hover:text-gray-900"
+                className="mr-3 text-gray-600 hover:text-gray-900 p-2 -ml-2"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="h-6 w-6" />
               </button>
-              <h1 className="text-xl font-bold text-gray-900">Nova Venda</h1>
+              <h1 className="text-lg font-bold text-gray-900">Nova Venda</h1>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-white shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Nome do Cliente</label>
-                  <input
-                    type="text"
-                    required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.clientName}
-                    onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Contato</label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.clientContact}
-                    onChange={(e) => setFormData({ ...formData, clientContact: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Material</label>
-                  <select
-                    required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.materialId}
-                    onChange={(e) => setFormData({ ...formData, materialId: e.target.value })}
-                  >
-                    <option value="">Selecione</option>
-                    {materials.map(m => (
-                      <option key={m.id} value={m.id}>{m.name} - R$ {m.priceColportor.toFixed(2)}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Quantidade</label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
-                  <select
-                    required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.paymentMethod}
-                    onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
-                  >
-                    <option value="DINHEIRO">Dinheiro</option>
-                    <option value="CARTAO_VISTA">Cartão à vista</option>
-                    <option value="CARTAO_PARCELADO">Cartão parcelado</option>
-                    <option value="PIX">PIX</option>
-                    <option value="OUTRO">Outro</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Parcelas</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="12"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.parcelCount}
-                    onChange={(e) => setFormData({ ...formData, parcelCount: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Acréscimo cartão (%)</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.cardFeePercent}
-                    onChange={(e) => setFormData({ ...formData, cardFeePercent: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Valor Total (R$)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.totalValue}
-                    onChange={(e) => setFormData({ ...formData, totalValue: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Data</label>
-                  <input
-                    type="date"
-                    required
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
-                >
-                  {loading ? 'Salvando...' : 'Salvar'}
-                </button>
-              </div>
-            </form>
+      <main className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Cliente</label>
+            <input
+              type="text"
+              required
+              className="input-mobile"
+              value={formData.clientName}
+              onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
+            />
           </div>
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contato</label>
+            <input
+              type="text"
+              className="input-mobile"
+              value={formData.clientContact}
+              onChange={(e) => setFormData({ ...formData, clientContact: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+            <select
+              required
+              className="input-mobile"
+              value={formData.materialId}
+              onChange={(e) => setFormData({ ...formData, materialId: e.target.value })}
+            >
+              <option value="">Selecione</option>
+              {materials.map(m => (
+                <option key={m.id} value={m.id}>{m.name} - R$ {m.priceColportor.toFixed(2)}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+            <input
+              type="number"
+              required
+              min="1"
+              className="input-mobile"
+              value={formData.quantity}
+              onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Forma de Pagamento</label>
+            <select
+              required
+              className="input-mobile"
+              value={formData.paymentMethod}
+              onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
+            >
+              <option value="DINHEIRO">Dinheiro</option>
+              <option value="CARTAO_VISTA">Cartão à vista</option>
+              <option value="CARTAO_PARCELADO">Cartão parcelado</option>
+              <option value="PIX">PIX</option>
+              <option value="OUTRO">Outro</option>
+            </select>
+          </div>
+          {(formData.paymentMethod === 'CARTAO_PARCELADO') && (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Parcelas (até 12x)</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="12"
+                  className="input-mobile"
+                  value={formData.parcelCount}
+                  onChange={(e) => setFormData({ ...formData, parcelCount: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Acréscimo cartão (%)</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  className="input-mobile"
+                  value={formData.cardFeePercent}
+                  onChange={(e) => setFormData({ ...formData, cardFeePercent: e.target.value })}
+                />
+              </div>
+            </>
+          )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Valor Total (R$)</label>
+            <input
+              type="number"
+              step="0.01"
+              required
+              className="input-mobile"
+              value={formData.totalValue}
+              onChange={(e) => setFormData({ ...formData, totalValue: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
+            <input
+              type="date"
+              required
+              className="input-mobile"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            />
+          </div>
+          <div className="flex space-x-3 pt-2">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="btn-mobile flex-1 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-mobile flex-1 bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50"
+            >
+              {loading ? 'Salvando...' : 'Salvar'}
+            </button>
+          </div>
+        </form>
       </main>
     </div>
   )
